@@ -1,0 +1,10 @@
+# Firebase secret key
+firebase-key.json
+Backend/firebase-key.json
+
+# Python cache
+__pycache__/
+Backend/__pycache__/
+
+# Virtual environment
+venv/
