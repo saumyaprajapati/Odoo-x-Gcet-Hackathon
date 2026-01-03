@@ -7,7 +7,7 @@ if (!user) {
 document.getElementById("username").innerText =
   user.first_name + " " + user.last_name;
 
-  function logout() {
+function logout() {
   localStorage.clear();
   window.location.href = "login.html";
 }

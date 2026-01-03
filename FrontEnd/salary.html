@@ -1,35 +1,351 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>My Profile</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Salary Information - HRMS</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .navbar {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .container {
+        max-width: 1200px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+        overflow: hidden;
+        animation: fadeInUp 0.6s ease-out;
+        margin-bottom: 2rem;
+      }
+
+      .card-header {
+        background: transparent;
+        border: none;
+        padding: 1.5rem 1.5rem 1rem;
+      }
+
+      .card-title {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #1f2937;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .card-body {
+        padding: 1.5rem;
+      }
+
+      .salary-summary {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+      }
+
+      .salary-amount {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .salary-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .info-item {
+        background: rgba(249, 250, 251, 0.8);
+        border-radius: 12px;
+        padding: 1.25rem;
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+      }
+
+      .info-item:hover {
+        background: rgba(249, 250, 251, 1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .info-value {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-back {
+        border-radius: 12px;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        border: none;
+        color: white;
+        box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3);
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-back:hover {
+        background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+        box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
+        transform: translateY(-2px);
+        color: white;
+        text-decoration: none;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .salary-amount {
+          font-size: 2rem;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
-  <body class="bg-light">
-    <div class="container mt-4">
-      <div class="card p-4 shadow">
-        <h3 id="profileName"></h3>
-        <p id="profileEmail"></p>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-cash-coin me-2"></i>HRMS - Salary
+        </a>
+      </div>
+    </nav>
 
-        <hr />
-        <h5>Job Info</h5>
-        <p>Position: <span id="jobPosition"></span></p>
-        <p>Department: <span id="department"></span></p>
-        <p>Manager: <span id="manager"></span></p>
-        <p>Location: <span id="location"></span></p>
+    <!-- Main Content -->
+    <div class="container mt-4 mb-5">
+      <!-- Salary Summary -->
+      <div class="salary-summary">
+        <div class="salary-label">Monthly Salary</div>
+        <div class="salary-amount" id="monthlyWage">-</div>
+        <div class="salary-label mt-3">Yearly Salary: <span id="yearlyWage">-</span></div>
+      </div>
 
-        <hr />
-        <h5>Private Info</h5>
-        <p>DOB: <span id="dob"></span></p>
-        <p>Address: <span id="address"></span></p>
+      <!-- Basic Information -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="bi bi-info-circle text-primary"></i>Basic Information
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-calendar-week"></i>Working Days per Week
+              </div>
+              <div class="info-value" id="workingDays">-</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-clock"></i>Break Time (Hours)
+              </div>
+              <div class="info-value" id="breakTime">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <hr />
-        <a href="employee.html" class="btn btn-secondary">Back</a>
+      <!-- Salary Components -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="bi bi-pie-chart text-success"></i>Salary Components
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-cash"></i>Basic Salary
+              </div>
+              <div class="info-value" id="basicSalary">-</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-house"></i>HRA
+              </div>
+              <div class="info-value" id="hra">-</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-gift"></i>Standard Allowance
+              </div>
+              <div class="info-value" id="standardAllowance">-</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-star"></i>Performance Bonus
+              </div>
+              <div class="info-value" id="performanceBonus">-</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-airplane"></i>Leave Travel Allowance
+              </div>
+              <div class="info-value" id="lta">-</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-wallet2"></i>Fixed Allowance
+              </div>
+              <div class="info-value" id="fixedAllowance">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PF Contribution -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="bi bi-shield-check text-info"></i>PF Contribution
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-person"></i>Employee Contribution
+              </div>
+              <div class="info-value" id="pfEmployee">-</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-building"></i>Employer Contribution
+              </div>
+              <div class="info-value" id="pfEmployer">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tax Information -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="bi bi-receipt text-warning"></i>Tax Information
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">
+                <i class="bi bi-file-earmark-text"></i>Professional Tax
+              </div>
+              <div class="info-value" id="professionalTax">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Button -->
+      <div class="text-center mt-4">
+        <a href="admin.html" class="btn-back">
+          <i class="bi bi-arrow-left"></i>Back to Admin Dashboard
+        </a>
       </div>
     </div>
 
-    <script src="js/profile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/salary.js"></script>
   </body>
 </html>

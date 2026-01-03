@@ -1,52 +1,525 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Employee Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Dashboard - HRMS</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .navbar {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .nav-link {
+        color: #555 !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        padding: 0.5rem 1rem !important;
+      }
+
+      .nav-link:hover {
+        color: #667eea !important;
+        background-color: rgba(102, 126, 234, 0.1);
+      }
+
+      .container {
+        max-width: 1200px;
+      }
+
+      .welcome-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        overflow: hidden;
+        position: relative;
+        animation: slideDown 0.6s ease-out;
+      }
+
+      .welcome-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+        animation: fadeInUp 0.6s ease-out;
+      }
+
+      .card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+      }
+
+      .attendance-card {
+        border-left: 5px solid #10b981;
+        animation-delay: 0.2s;
+      }
+
+      .leave-card {
+        border-left: 5px solid #3b82f6;
+        animation-delay: 0.4s;
+      }
+
+      .card-header {
+        background: transparent;
+        border: none;
+        padding: 1.5rem 1.5rem 0.5rem;
+      }
+
+      .card-title {
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: #1f2937;
+        margin: 0;
+      }
+
+      .card-body {
+        padding: 1.5rem;
+      }
+
+      .btn {
+        border-radius: 12px;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+        border: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+      }
+
+      .btn:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+      }
+
+      .btn-success:hover {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+        transform: translateY(-2px);
+      }
+
+      .btn-warning {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        color: white;
+      }
+
+      .btn-warning:hover {
+        background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        transform: translateY(-2px);
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+      }
+
+      .btn-danger:hover {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+        transform: translateY(-2px);
+      }
+
+      .btn-light {
+        background: rgba(255, 255, 255, 0.9);
+        color: #667eea;
+        border: 2px solid #667eea;
+      }
+
+      .btn-light:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .btn-attendance {
+        min-width: 180px;
+        font-size: 1.1rem;
+        padding: 1rem 1.5rem;
+        margin: 0.5rem 0;
+      }
+
+      .form-control,
+      .form-select {
+        border-radius: 12px;
+        border: 2px solid #e5e7eb;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        background: white;
+        outline: none;
+      }
+
+      .form-label {
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.5rem;
+      }
+
+      .welcome-text {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      .welcome-subtitle {
+        color: #6b7280;
+        font-size: 1rem;
+      }
+
+      .section-icon {
+        font-size: 1.5rem;
+        margin-right: 0.75rem;
+      }
+
+      .icon-success {
+        color: #10b981;
+      }
+
+      .icon-primary {
+        color: #3b82f6;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .mt-4 {
+        margin-top: 2rem !important;
+      }
+
+      .mb-4 {
+        margin-bottom: 2rem !important;
+      }
+
+      .mb-5 {
+        margin-bottom: 3rem !important;
+      }
+
+      .text-muted-custom {
+        color: #6b7280;
+      }
+
+      .section-description {
+        color: #6b7280;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .welcome-text {
+          font-size: 1.5rem;
+        }
+
+        .btn-attendance {
+          min-width: 100%;
+        }
+
+        .card {
+          margin-bottom: 1.5rem;
+        }
+      }
+
+      /* Smooth scroll */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Loading animation for buttons */
+      .btn:active {
+        transform: scale(0.98);
+      }
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-dark bg-primary px-3">
-      <span class="navbar-brand">HRMS - Employee</span>
-      <div>
-        <a href="profile.html" class="btn btn-light btn-sm">My Profile</a>
-        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-briefcase-fill me-2"></i>HRMS Portal
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" href="profile.html">
+                <i class="bi bi-person-circle me-1"></i>My Profile
+              </a>
+            </li>
+            <li class="nav-item ms-2">
+              <button class="btn btn-danger btn-sm" onclick="logout()">
+                <i class="bi bi-box-arrow-right me-1"></i>Logout
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
 
-    <div class="container mt-4">
-      <h4 id="username"></h4>
+    <!-- Main Content -->
+    <div class="container mt-5 pt-5 mb-5">
+      <!-- Welcome Card -->
+      <div class="welcome-card mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between flex-wrap">
+            <div>
+              <div class="welcome-text">
+                <i class="bi bi-person-check-fill me-2"></i>Welcome,
+                <span id="username"></span>
+              </div>
+              <p class="welcome-subtitle mb-0">
+                Manage your attendance and leave requests with ease
+              </p>
+            </div>
+            <div class="mt-3 mt-md-0">
+              <div
+                class="d-inline-block p-3 rounded-circle"
+                style="
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                "
+              >
+                <i class="bi bi-calendar-check text-white" style="font-size: 2rem"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <hr />
+      <div class="row g-4">
+        <!-- Attendance Section -->
+        <div class="col-lg-6">
+          <div class="card attendance-card h-100">
+            <div class="card-header">
+              <h5 class="card-title">
+                <i class="bi bi-clock-history section-icon icon-success"></i>Attendance
+                Management
+              </h5>
+              <p class="section-description mb-0">
+                Mark your daily attendance and track your working hours
+              </p>
+            </div>
+            <div class="card-body">
+              <div class="d-grid gap-3">
+                <button
+                  class="btn btn-success btn-lg btn-attendance"
+                  onclick="checkIn()"
+                >
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Check In
+                </button>
+                <button
+                  class="btn btn-warning btn-lg btn-attendance"
+                  onclick="checkOut()"
+                >
+                  <i class="bi bi-box-arrow-right me-2"></i>Check Out
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <h5>Attendance</h5>
-      <button class="btn btn-success" onclick="checkIn()">Check In</button>
-      <button class="btn btn-warning" onclick="checkOut()">Check Out</button>
+        <!-- Leave Application Section -->
+        <div class="col-lg-6">
+          <div class="card leave-card h-100">
+            <div class="card-header">
+              <h5 class="card-title">
+                <i class="bi bi-calendar-event section-icon icon-primary"></i>Leave
+                Application
+              </h5>
+              <p class="section-description mb-0">
+                Submit your leave requests for approval
+              </p>
+            </div>
+            <div class="card-body">
+              <form id="leaveForm">
+                <div class="mb-3">
+                  <label for="leave_type" class="form-label"
+                    ><i class="bi bi-tag me-1"></i>Leave Type</label
+                  >
+                  <select class="form-select" id="leave_type" required>
+                    <option value="">Select leave type</option>
+                    <option value="casual">Casual Leave</option>
+                    <option value="sick">Sick Leave</option>
+                  </select>
+                </div>
 
-      <hr />
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="from_date" class="form-label"
+                      ><i class="bi bi-calendar-event me-1"></i>From Date</label
+                    >
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="from_date"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="to_date" class="form-label"
+                      ><i class="bi bi-calendar-check me-1"></i>To Date</label
+                    >
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="to_date"
+                      required
+                    />
+                  </div>
+                </div>
 
-      <h5>Apply Leave</h5>
+                <div class="mb-4">
+                  <label for="reason" class="form-label"
+                    ><i class="bi bi-chat-left-text me-1"></i>Reason</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="reason"
+                    rows="3"
+                    placeholder="Please provide a detailed reason for your leave request..."
+                    required
+                  ></textarea>
+                </div>
 
-      <select class="form-control mb-2" id="leave_type">
-        <option value="casual">Casual</option>
-        <option value="sick">Sick</option>
-      </select>
-
-      <input type="date" class="form-control mb-2" id="from_date" />
-      <input type="date" class="form-control mb-2" id="to_date" />
-      <textarea
-        class="form-control mb-2"
-        id="reason"
-        placeholder="Reason"
-      ></textarea>
-
-      <button class="btn btn-primary" onclick="applyLeave()">
-        Apply Leave
-      </button>
+                <button
+                  type="button"
+                  class="btn btn-primary w-100 btn-lg"
+                  onclick="applyLeave()"
+                >
+                  <i class="bi bi-send-fill me-2"></i>Submit Leave Request
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Scripts -->
     <script src="js/dashboard.js"></script>
     <script src="js/attendance.js"></script>
     <script src="js/leave.js"></script>

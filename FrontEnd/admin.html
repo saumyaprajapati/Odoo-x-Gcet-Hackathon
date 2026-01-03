@@ -1,38 +1,525 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Admin Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - HRMS</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .navbar {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        border: none;
+        border-radius: 12px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .btn-danger:hover {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+        transform: translateY(-2px);
+      }
+
+      .container {
+        max-width: 1400px;
+      }
+
+      .welcome-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        overflow: hidden;
+        position: relative;
+        animation: slideDown 0.6s ease-out;
+        margin-bottom: 2rem;
+      }
+
+      .welcome-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+        animation: fadeInUp 0.6s ease-out;
+        margin-bottom: 2rem;
+      }
+
+      .card-header {
+        background: transparent;
+        border: none;
+        padding: 1.5rem 1.5rem 1rem;
+      }
+
+      .card-title {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #1f2937;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .card-body {
+        padding: 1.5rem;
+      }
+
+      .employee-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border: 2px solid #e5e7eb;
+        transition: all 0.3s ease;
+      }
+
+      .employee-card:hover {
+        border-color: #667eea;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .employee-name {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+      }
+
+      .employee-email {
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+      }
+
+      .employee-status {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .status-active {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      .status-inactive {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .leave-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #3b82f6;
+        transition: all 0.3s ease;
+      }
+
+      .leave-card:hover {
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        transform: translateX(4px);
+      }
+
+      .leave-card.pending {
+        border-left-color: #f59e0b;
+      }
+
+      .leave-card.approved {
+        border-left-color: #10b981;
+      }
+
+      .leave-card.rejected {
+        border-left-color: #ef4444;
+      }
+
+      .leave-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+      }
+
+      .leave-employee {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .leave-status {
+        padding: 0.375rem 0.875rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: capitalize;
+      }
+
+      .status-pending {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .status-approved {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      .status-rejected {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .leave-info {
+        margin-bottom: 1rem;
+      }
+
+      .leave-info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: #4b5563;
+      }
+
+      .leave-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .btn-approve {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
+        padding: 0.625rem 1.25rem;
+        border-radius: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+      }
+
+      .btn-approve:hover {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .btn-reject {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        border: none;
+        padding: 0.625rem 1.25rem;
+        border-radius: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+      }
+
+      .btn-reject:hover {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .welcome-text {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #6b7280;
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-dark bg-dark px-3">
-      <span class="navbar-brand">HRMS - Admin</span>
-      <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-shield-check me-2"></i>HRMS - Admin Portal
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <button class="btn btn-danger btn-sm" onclick="logout()">
+                <i class="bi bi-box-arrow-right me-1"></i>Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
 
-    <div class="container mt-4">
-      <h4 id="username"></h4>
+    <!-- Main Content -->
+    <div class="container mt-5 pt-4 mb-5">
+      <!-- Welcome Card -->
+      <div class="welcome-card">
+        <div class="card-body p-4">
+          <div class="welcome-text">
+            <i class="bi bi-shield-check me-2"></i>Welcome,
+            <span id="username"></span>
+          </div>
+          <p class="text-muted mb-0">Manage employees and leave requests</p>
+        </div>
+      </div>
 
-      <hr />
+      <!-- Employees Section -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="bi bi-people text-primary"></i>Employees
+          </h3>
+        </div>
+        <div class="card-body">
+          <div id="employeeList" class="row"></div>
+        </div>
+      </div>
 
-      <h5>Employees</h5>
-      <div id="employeeList" class="row"></div>
-
-      <hr />
-
-      <h5>Leave Requests</h5>
-      <div id="leaveContainer"></div>
+      <!-- Leave Requests Section -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="bi bi-calendar-check text-warning"></i>Leave Requests
+          </h3>
+        </div>
+        <div class="card-body">
+          <div id="leaveContainer"></div>
+        </div>
+      </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/dashboard.js"></script>
-    <script src="js/employees.js"></script>
     <script src="js/admin_leave.js"></script>
-
+    <script src="js/employees.js"></script>
     <script>
-      loadEmployees();
+      // Enhanced employee card rendering
+      const originalLoadEmployees = loadEmployees;
+      window.loadEmployees = async function() {
+        const res = await fetch("http://127.0.0.1:8000/employees");
+        const data = await res.json();
+
+        const container = document.getElementById("employeeList");
+        container.innerHTML = "";
+
+        if (data.employees.length === 0) {
+          container.innerHTML = `
+            <div class="col-12">
+              <div class="empty-state">
+                <i class="bi bi-people"></i>
+                <p>No employees found</p>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        data.employees.forEach((emp) => {
+          const col = document.createElement("div");
+          col.className = "col-md-6 col-lg-4";
+          col.innerHTML = `
+            <div class="employee-card">
+              <div class="employee-name">
+                <i class="bi bi-person-circle me-2 text-primary"></i>${emp.name}
+              </div>
+              <div class="employee-email">
+                <i class="bi bi-envelope me-2"></i>${emp.email}
+              </div>
+              <div>
+                <span class="employee-status ${
+                  emp.status === "active" ? "status-active" : "status-inactive"
+                }">
+                  ${emp.status}
+                </span>
+              </div>
+            </div>
+          `;
+          container.appendChild(col);
+        });
+      };
+
+      // Enhanced leave card rendering
+      const originalLoadLeaves = loadLeaves;
+      window.loadLeaves = async function() {
+        const res = await fetch("http://127.0.0.1:8000/admin/leaves");
+        const data = await res.json();
+
+        const container = document.getElementById("leaveContainer");
+        container.innerHTML = "";
+
+        if (data.leaves.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="bi bi-calendar-x"></i>
+              <p>No leave requests</p>
+            </div>
+          `;
+          return;
+        }
+
+        data.leaves.forEach((leave) => {
+          const div = document.createElement("div");
+          div.className = `leave-card ${leave.status}`;
+
+          div.innerHTML = `
+            <div class="leave-header">
+              <div class="leave-employee">
+                <i class="bi bi-person-circle me-2"></i>${leave.employee_name}
+              </div>
+              <span class="leave-status status-${leave.status}">${leave.status}</span>
+            </div>
+            <div class="leave-info">
+              <div class="leave-info-item">
+                <i class="bi bi-tag"></i>
+                <strong>Type:</strong> ${leave.leave_type}
+              </div>
+              <div class="leave-info-item">
+                <i class="bi bi-calendar-event"></i>
+                <strong>From:</strong> ${leave.from_date}
+              </div>
+              <div class="leave-info-item">
+                <i class="bi bi-calendar-check"></i>
+                <strong>To:</strong> ${leave.to_date}
+              </div>
+              <div class="leave-info-item">
+                <i class="bi bi-chat-left-text"></i>
+                <strong>Reason:</strong> ${leave.reason}
+              </div>
+            </div>
+            ${
+              leave.status === "pending"
+                ? `
+              <div class="leave-actions">
+                <button class="btn-approve" onclick="updateLeave('${leave.leave_id}', 'approved')">
+                  <i class="bi bi-check-circle me-1"></i>Approve
+                </button>
+                <button class="btn-reject" onclick="updateLeave('${leave.leave_id}', 'rejected')">
+                  <i class="bi bi-x-circle me-1"></i>Reject
+                </button>
+              </div>
+            `
+                : ""
+            }
+          `;
+
+          container.appendChild(div);
+        });
+      };
+
+      // Call functions after page loads
+      setTimeout(() => {
+        if (typeof loadEmployees === 'function') loadEmployees();
+        if (typeof loadLeaves === 'function') loadLeaves();
+      }, 100);
     </script>
   </body>
 </html>
