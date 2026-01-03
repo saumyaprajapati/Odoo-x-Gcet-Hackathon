@@ -1,26 +1,24 @@
 async function login() {
-  const data = {
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value
-  };
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   const res = await fetch("http://127.0.0.1:8000/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify({ email, password })
   });
 
-  const result = await res.json();
+  const data = await res.json();
 
-  if (result.status === "success") {
-    localStorage.setItem("user", JSON.stringify(result.user));
+  if (data.status === "success") {
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-    if (result.user.role === "admin") {
+    if (data.user.role === "admin") {
       window.location.href = "admin.html";
     } else {
       window.location.href = "employee.html";
     }
   } else {
-    alert(result.message);
+    alert(data.message);
   }
 }
